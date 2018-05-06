@@ -25,12 +25,17 @@ func main() {
 	// This is the 24 hour value we are trying to parse
 	inputTime := os.Args[1]
 
-	myclock := createBerlinClock(inputTime)
+	myclock, err := createBerlinClock(inputTime)
+	if err != nil {
+		fmt.Println("Error parsing time - invalid time given")
+		fmt.Println("Please provide a time in the following format (24 hour - Hour:Minute:Second ):")
+		fmt.Println(os.Args[0], "04:33:02")
+	}
 
 	printClock(*myclock)
 }
 
-func createBerlinClock(inputTime string) *berlinClock {
+func createBerlinClock(inputTime string) (clock *berlinClock, err error) {
 
 	// Put it into the correct format
 	value := "Monday, 02-Jan-06 " + inputTime + " BST"
@@ -41,10 +46,7 @@ func createBerlinClock(inputTime string) *berlinClock {
 	// Parse the string according to the form.
 	parsedTime, err := time.Parse(form, value)
 	if err != nil {
-		fmt.Println("Error parsing time - invalid time given")
-		fmt.Println("Please provide a time in the following format (24 hour - Hour:Minute:Second ):")
-		fmt.Println(os.Args[0], "04:33:02")
-		os.Exit(1)
+		return nil, err
 	}
 
 	myclock := new(berlinClock)
@@ -62,7 +64,7 @@ func createBerlinClock(inputTime string) *berlinClock {
 		myclock.SecondBulb = true
 	}
 
-	return myclock
+	return myclock, nil
 }
 
 func printClock(myClock berlinClock) {

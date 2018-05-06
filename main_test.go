@@ -15,6 +15,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		oneHourRow     int
 		fiveMinuteRow  int
 		oneMinuteRow   int
+		causesError    bool
 	}{
 		{
 			name:           "Check all rows 0",
@@ -24,6 +25,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     0,
 			fiveMinuteRow:  0,
 			oneMinuteRow:   0,
+			causesError:    false,
 		},
 		{
 			name:           "Check 6am",
@@ -33,6 +35,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     1,
 			fiveMinuteRow:  0,
 			oneMinuteRow:   0,
+			causesError:    false,
 		},
 		{
 			name:           "Check 13:35:51",
@@ -42,6 +45,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     3,
 			fiveMinuteRow:  7,
 			oneMinuteRow:   0,
+			causesError:    false,
 		},
 		{
 			name:           "Check 23:59:59",
@@ -51,13 +55,33 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     3,
 			fiveMinuteRow:  11,
 			oneMinuteRow:   4,
+			causesError:    false,
+		},
+		{
+			name:           "Check 24:00:01 causes error",
+			twentyFourHour: "24:00:01",
+			causesError:    true,
+		},
+		{
+			name:           "Check 12:61:01 causes error",
+			twentyFourHour: "12:61:01",
+			causesError:    true,
+		},
+		{
+			name:           "Check 06:59:61 causes error",
+			twentyFourHour: "06:59:61",
+			causesError:    true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 
-			got := createBerlinClock(c.twentyFourHour)
+			var causesError bool
+			got, err := createBerlinClock(c.twentyFourHour)
+			if err != nil {
+				causesError = true
+			}
 
 			want := &berlinClock{
 				SecondBulb:    c.secondBulb,
@@ -67,9 +91,17 @@ func TestCreateBerlinClock(t *testing.T) {
 				OneMinuteRow:  c.oneMinuteRow,
 			}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got: %#v\nwant: %#v\n", got, want)
+			if causesError {
+				if !reflect.DeepEqual(causesError, c.causesError) {
+					t.Errorf("got: %#v\nwant: %#v\n", causesError, c.causesError)
+				}
+			} else {
+
+				if !reflect.DeepEqual(got, want) {
+					t.Errorf("got: %#v\nwant: %#v\n", got, want)
+				}
 			}
+
 		})
 	}
 }
