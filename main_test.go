@@ -78,7 +78,9 @@ func TestCreateBerlinClock(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 
 			var causesError bool
-			got, err := createBerlinClock(c.twentyFourHour)
+
+			got := new(berlinClock)
+			err := got.createBerlinClock(c.twentyFourHour)
 			if err != nil {
 				causesError = true
 			}
