@@ -18,8 +18,8 @@ type berlinClock struct {
 func main() {
 
 	if len(os.Args) < 2 {
-		fmt.Println("Please provide a time in the following format (24 hour):")
-		fmt.Println(os.Args[0], "04:33:02 - Hour:Minute:Second")
+		fmt.Println("Please provide a time in the following format (24 hour - Hour:Minute:Second ):")
+		fmt.Println(os.Args[0], "04:33:02")
 		os.Exit(1)
 	}
 	// This is the 24 hour value we are trying to parse
@@ -42,8 +42,8 @@ func createBerlinClock(inputTime string) *berlinClock {
 	parsedTime, err := time.Parse(form, value)
 	if err != nil {
 		fmt.Println("Error parsing time - invalid time given")
-		fmt.Println("Please provide a time in the following format (24 hour):")
-		fmt.Println(os.Args[0], "04:33:02 - Hour:Minute:Second")
+		fmt.Println("Please provide a time in the following format (24 hour - Hour:Minute:Second ):")
+		fmt.Println(os.Args[0], "04:33:02")
 		os.Exit(1)
 	}
 
@@ -68,8 +68,8 @@ func createBerlinClock(inputTime string) *berlinClock {
 func printClock(myClock berlinClock) {
 
 	fmt.Println("Seconds bulb on:", myClock.SecondBulb)
-	fmt.Println("[ROW 1] Five hour row count:", myClock.FiveHourRow)
-	fmt.Println("[ROW 2] One hour row count:", myClock.OneHourRow)
-	fmt.Println("[ROW 3] Five minutes row count:", myClock.FiveMinuteRow)
-	fmt.Println("[ROW 4] One minute row count:", myClock.OneMinuteRow)
+	fmt.Println("[ROW 1] Five hour row count:", myClock.FiveHourRow, "/ 4")
+	fmt.Println("[ROW 2] One hour row count:", myClock.OneHourRow, "/ 4")
+	fmt.Println("[ROW 3] Five minutes row count:", myClock.FiveMinuteRow, "/ 11")
+	fmt.Println("[ROW 4] One minute row count:", myClock.OneMinuteRow, "/ 4")
 }
