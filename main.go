@@ -54,8 +54,8 @@ func createBerlinClock(inputTime string) *berlinClock {
 	myclock.OneHourRow = parsedTime.Hour() % 5
 
 	// Get the minutes
-	myclock.FiveMinuteRow = parsedTime.Hour() / 5
-	myclock.OneMinuteRow = parsedTime.Hour() % 5
+	myclock.FiveMinuteRow = parsedTime.Minute() / 5
+	myclock.OneMinuteRow = parsedTime.Minute() % 5
 
 	// Get the seconds
 	if parsedTime.Second()%2 == 0 {
