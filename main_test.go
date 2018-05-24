@@ -10,7 +10,7 @@ func TestCreateBerlinClock(t *testing.T) {
 	cases := []struct {
 		name           string
 		twentyFourHour string
-		secondBulb     bool
+		secondBulb     int
 		fiveHourRow    int
 		oneHourRow     int
 		fiveMinuteRow  int
@@ -20,7 +20,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		{
 			name:           "Check all rows 0",
 			twentyFourHour: "00:00:00",
-			secondBulb:     true,
+			secondBulb:     1,
 			fiveHourRow:    0,
 			oneHourRow:     0,
 			fiveMinuteRow:  0,
@@ -30,7 +30,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		{
 			name:           "Check 6am",
 			twentyFourHour: "06:00:00",
-			secondBulb:     true,
+			secondBulb:     1,
 			fiveHourRow:    1,
 			oneHourRow:     1,
 			fiveMinuteRow:  0,
@@ -40,7 +40,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		{
 			name:           "Check 13:35:51",
 			twentyFourHour: "13:35:51",
-			secondBulb:     false,
+			secondBulb:     0,
 			fiveHourRow:    2,
 			oneHourRow:     3,
 			fiveMinuteRow:  7,
@@ -50,7 +50,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		{
 			name:           "Check 23:59:59",
 			twentyFourHour: "23:59:59",
-			secondBulb:     false,
+			secondBulb:     0,
 			fiveHourRow:    4,
 			oneHourRow:     3,
 			fiveMinuteRow:  11,

@@ -3,17 +3,31 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
 // The int in each row represents the amount of lights on
 type berlinClock struct {
-	SecondBulb    bool
+	SecondBulb    int
 	FiveHourRow   int
 	OneHourRow    int
 	FiveMinuteRow int
 	OneMinuteRow  int
 }
+
+const (
+	lampOn        = "Y"
+	lampOff       = "O"
+	fiveHourOn    = "RRRR"
+	fiveHourOff   = "OOOO"
+	oneHourOn     = "RRRR"
+	oneHourOff    = "OOOO"
+	fiveMinuteOn  = "YYRYYRYYRYY"
+	fiveMinuteOff = "OOOOOOOOOOO"
+	oneMinuteOn   = "YYYY"
+	oneMinuteOff  = "OOOO"
+)
 
 func main() {
 
@@ -34,6 +48,8 @@ func main() {
 	}
 
 	printClock(*myclock)
+
+	fmt.Println(myclock.returnColor())
 }
 
 func (clock *berlinClock) createBerlinClock(inputTime string) (err error) {
@@ -59,18 +75,64 @@ func (clock *berlinClock) createBerlinClock(inputTime string) (err error) {
 	clock.OneMinuteRow = parsedTime.Minute() % 5
 
 	// Get the seconds
-	if parsedTime.Second()%2 == 0 {
-		clock.SecondBulb = true
-	}
+	clock.SecondBulb = 1 - (parsedTime.Second() % 2)
 
 	return nil
 }
 
 func printClock(myClock berlinClock) {
 
-	fmt.Println("Seconds bulb on:", myClock.SecondBulb)
+	fmt.Println("Seconds bulb on:", myClock.SecondBulb, "/1")
 	fmt.Println("[ROW 1] Five hour row count:", myClock.FiveHourRow, "/ 4")
 	fmt.Println("[ROW 2] One hour row count:", myClock.OneHourRow, "/ 4")
 	fmt.Println("[ROW 3] Five minutes row count:", myClock.FiveMinuteRow, "/ 11")
 	fmt.Println("[ROW 4] One minute row count:", myClock.OneMinuteRow, "/ 4")
+}
+
+func (clock *berlinClock) returnColor() string {
+
+	a1 := returnSlice(lampOn)[:clock.SecondBulb]
+	a2 := returnSlice(lampOff)[clock.SecondBulb:]
+
+	b1 := returnSlice(fiveHourOn)[:clock.FiveHourRow]
+	b2 := returnSlice(fiveHourOff)[clock.FiveHourRow:]
+
+	c1 := returnSlice(oneHourOn)[:clock.OneHourRow]
+	c2 := returnSlice(oneHourOff)[clock.OneHourRow:]
+
+	d1 := returnSlice(fiveMinuteOn)[:clock.FiveMinuteRow]
+	d2 := returnSlice(fiveMinuteOff)[clock.FiveMinuteRow:]
+
+	e1 := returnSlice(oneMinuteOn)[:clock.OneMinuteRow]
+	e2 := returnSlice(oneMinuteOff)[clock.OneMinuteRow:]
+
+	allslices := [][]string{
+		a1,
+		a2,
+		b1,
+		b2,
+		c1,
+		c2,
+		d1,
+		d2,
+		e1,
+		e2,
+	}
+
+	return strings.Join(combineSlices(allslices), "")
+}
+
+func returnSlice(word string) []string {
+	return strings.Split(word, "")
+}
+
+func combineSlices(twodslice [][]string) (returnslice []string) {
+
+	for _, slice := range twodslice {
+		for _, value := range slice {
+			returnslice = append(returnslice, value)
+		}
+	}
+
+	return
 }
