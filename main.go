@@ -14,6 +14,7 @@ type berlinClock struct {
 	OneHourRow    int
 	FiveMinuteRow int
 	OneMinuteRow  int
+	OverallColor  string
 }
 
 const (
@@ -49,7 +50,8 @@ func main() {
 
 	printClock(*myclock)
 
-	fmt.Println(myclock.returnColor())
+	myclock.returnColor()
+	fmt.Println(myclock.OverallColor)
 }
 
 func (clock *berlinClock) createBerlinClock(inputTime string) (err error) {
@@ -89,7 +91,7 @@ func printClock(myClock berlinClock) {
 	fmt.Println("[ROW 4] One minute row count:", myClock.OneMinuteRow, "/ 4")
 }
 
-func (clock *berlinClock) returnColor() string {
+func (clock *berlinClock) returnColor() {
 
 	a1 := returnSlice(lampOn)[:clock.SecondBulb]
 	a2 := returnSlice(lampOff)[clock.SecondBulb:]
@@ -119,7 +121,7 @@ func (clock *berlinClock) returnColor() string {
 		e2,
 	}
 
-	return strings.Join(combineSlices(allslices), "")
+	clock.OverallColor = strings.Join(combineSlices(allslices), "")
 }
 
 func returnSlice(word string) []string {

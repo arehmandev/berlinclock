@@ -15,6 +15,7 @@ func TestCreateBerlinClock(t *testing.T) {
 		oneHourRow     int
 		fiveMinuteRow  int
 		oneMinuteRow   int
+		overallColor   string
 		causesError    bool
 	}{
 		{
@@ -25,6 +26,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     0,
 			fiveMinuteRow:  0,
 			oneMinuteRow:   0,
+			overallColor:   "YOOOOOOOOOOOOOOOOOOOOOOO",
 			causesError:    false,
 		},
 		{
@@ -35,6 +37,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     1,
 			fiveMinuteRow:  0,
 			oneMinuteRow:   0,
+			overallColor:   "YROOOROOOOOOOOOOOOOOOOOO",
 			causesError:    false,
 		},
 		{
@@ -45,6 +48,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     3,
 			fiveMinuteRow:  7,
 			oneMinuteRow:   0,
+			overallColor:   "ORROORRROYYRYYRYOOOOOOOO",
 			causesError:    false,
 		},
 		{
@@ -55,6 +59,7 @@ func TestCreateBerlinClock(t *testing.T) {
 			oneHourRow:     3,
 			fiveMinuteRow:  11,
 			oneMinuteRow:   4,
+			overallColor:   "ORRRRRRROYYRYYRYYRYYYYYY",
 			causesError:    false,
 		},
 		{
@@ -85,12 +90,15 @@ func TestCreateBerlinClock(t *testing.T) {
 				causesError = true
 			}
 
+			got.returnColor()
+
 			want := &berlinClock{
 				SecondBulb:    c.secondBulb,
 				FiveHourRow:   c.fiveHourRow,
 				OneHourRow:    c.oneHourRow,
 				FiveMinuteRow: c.fiveMinuteRow,
 				OneMinuteRow:  c.oneMinuteRow,
+				OverallColor:  c.overallColor,
 			}
 
 			if causesError {
